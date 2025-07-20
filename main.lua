@@ -824,7 +824,7 @@ if next(SMODS.find_mod("Cryptid")) then
 end
 SMODS.Consumable:take_ownership_by_kind('Tickets', {
 	use = function(self, card, area, copier)
-		if dollarReturn = true then
+		if dollarReturn == true then
 			return {dollars = cost / 2}
 		end
 	end
@@ -970,7 +970,7 @@ SMODS.Voucher{
 	},
 	atlas = 'Vouchers',
 	pos = {x = 1, y = 0},
-	requires = {v_nv_ticket1}
+	requires = {v_nv_ticket1},
 	redeem = function(self, card)
         G.E_MANAGER:add_event(Event({
             func = function()
