@@ -22,6 +22,9 @@ function roundExtense(n,x)
 end
 Ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'}
 rank = 13
+ticketRate = 2
+dollarReturn = false
+
 
 SMODS.current_mod.optional_features = function()
     return {
@@ -43,6 +46,12 @@ SMODS.Atlas{
 SMODS.Atlas{
 	key = 'Boosters',
 	path = 'Boosters.png',
+	px = 71,
+	py = 95
+}
+SMODS.Atlas{
+	key = 'Vouchers',
+	path = 'Vouchers.png',
 	px = 71,
 	py = 95
 }
@@ -148,7 +157,7 @@ SMODS.ConsumableType {
     primary_colour = G.C.SECONDARY_SET.Spectral,
     secondary_colour = G.C.SECONDARY_SET.Spectral,
     collection_rows = { 5, 6 },
-    shop_rate = 2
+    shop_rate = ticketRate
 }
 
 SMODS.Consumable{
@@ -729,7 +738,97 @@ SMODS.Consumable{
         return true
     end
 }
-
+if next(SMODS.find_mod("Cryptid")) then
+	SMODS.Consumable{
+		key = 'code1',
+		loc_txt = {
+			name = 'Code Ticket I',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:code}code{} card'
+			},
+		},
+		atlas = 'Tickets',
+		set = 'Tickets',
+		pos = {x = 3, y = 1},
+		cost = 4,
+		config = {
+			extra = {
+				code = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.code}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.code, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'Code' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+	SMODS.Consumable{
+		key = 'code2',
+		loc_txt = {
+			name = 'Code Ticket II',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:code}code{} cards'
+			},
+		},
+		atlas = 'Tickets',
+		set = 'Tickets',
+		pos = {x = 3, y = 1},
+		cost = 4,
+		config = {
+			extra = {
+				code = 2
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.code}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.code, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'Code' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+end
+SMODS.Consumable:take_ownership_by_kind('Tickets', {
+	use = function(self, card, area, copier)
+		if dollarReturn = true then
+			return {dollars = cost / 2}
+		end
+	end
+}) 
 
 
 
@@ -832,5 +931,52 @@ SMODS.Booster{
 	},
 	create_card = function(self,card)
 		return create_card("Tickets", G.pack_cards, nil, nil, true, true, nil, "NotVanilla_tickets")
+	end,
+}
+
+-- vouchers area
+SMODS.Voucher{
+	key = 'ticket1',
+	loc_txt = {
+		name = 'Mass Production',
+		text = {
+			'Tickets are {C:attention}#1#x{} more likely',
+			'to appear in shops'
+		}
+	},
+	atlas = 'Vouchers',
+	pos = {x = 0, y = 0},
+	config = {extra = {rate = 2}},
+	loc_vars = function(self,info_queue,center)
+		return{vars = {center.ability.extra.rate}}
+	end,
+	redeem = function(self, card)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                ticketRate = card.ability.extra.rate
+                return true
+            end
+        }))
+	end,
+}
+SMODS.Voucher{
+	key = 'ticket2',
+	loc_txt = {
+		name = 'Prized Tickets',
+		text = {
+			'Tickets give half of their {C:money}sell value{}',
+			'back when used'
+		}
+	},
+	atlas = 'Vouchers',
+	pos = {x = 1, y = 0},
+	requires = {v_nv_ticket1}
+	redeem = function(self, card)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                dollarReturn = true
+                return true
+            end
+        }))
 	end,
 }
