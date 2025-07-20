@@ -825,7 +825,7 @@ if next(SMODS.find_mod("Cryptid")) then
 		},
 		atlas = 'Tickets',
 		set = 'Tickets',
-		pos = {x = 3, y = 1},
+		pos = {x = 4, y = 1},
 		cost = 4,
 		config = {
 			extra = {
