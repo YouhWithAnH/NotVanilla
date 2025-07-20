@@ -1,0 +1,14 @@
+{
+	"id": "NotVanilla",
+	"name": "Not Vanilla",
+	"author": ["youhwithanh"],
+	"description": "An attempt to bring a vanilla-like expansion.",
+	"prefix": "nv",
+	"main_file": "main.lua",
+	"priority": 0,
+	"badge_colour": "914058",
+	"badge_text_colour": "30171E",
+	"display_name": "NotVanilla",
+	"version": "Alpha 1",
+	"dependencies": []
+}
