@@ -349,10 +349,12 @@ SMODS.Consumable{
 							play_sound('timpani')
 							SMODS.add_card({ set = 'Tarot' })
 							card:juice_up(0.3, 0.5)
+							switch = 1
 						else
 							play_sound('timpani')
 							SMODS.add_card({ set = 'Spectral' })
 							card:juice_up(0.3, 0.5)
+							switch = 0
 						end
                     end
                     return true
