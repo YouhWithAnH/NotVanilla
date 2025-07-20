@@ -23,7 +23,6 @@ end
 Ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'}
 rank = 13
 ticketRate = 2
-dollarReturn = false
 
 
 SMODS.current_mod.optional_features = function()
@@ -139,7 +138,43 @@ SMODS.Joker{
 		end
 	end,
 }
-
+SMODS.Joker{
+	key = 'ticket',
+	loc_txt = {
+		name = 'Ticket Booth',
+		text = {
+			'Gives {C:dark_edition}#1#{} random {C:mult}ticket{} card',
+			'when exiting the shop'
+			}
+	},
+	atlas = 'Jokers',
+	rarity = 2,
+	cost = 6,
+	blueprint_compat = true,
+	perishable_compat = false,
+	eternal_compat = false,
+	pos = {x = 2, y= 0},
+	in_pool = function(self,wawa,wawa2)
+		allow_duplicates = false
+		return true
+    end,
+		config = { 
+		extra = {
+			tickets = 1}
+		},
+	loc_vars = function(self,info_queue,center)
+		return{vars = {center.ability.extra.tickets}}
+	end,
+	calculate = function(self,card,context)
+		if context.ending_shop then 
+            play_sound('timpani')
+            SMODS.add_card({ set = 'Tickets' })
+            card:juice_up(0.3, 0.5)
+			message = '+1 Ticket'
+			colour = G.C.MULT
+		end
+	end,
+}
 
 
 
@@ -157,7 +192,7 @@ SMODS.ConsumableType {
     primary_colour = G.C.SECONDARY_SET.Spectral,
     secondary_colour = G.C.SECONDARY_SET.Spectral,
     collection_rows = { 5, 6 },
-    shop_rate = ticketRate
+    shop_rate = 2
 }
 
 SMODS.Consumable{
@@ -822,13 +857,15 @@ if next(SMODS.find_mod("Cryptid")) then
     	end
 	}
 end
-SMODS.Consumable:take_ownership_by_kind('Tickets', {
-	use = function(self, card, area, copier)
-		if dollarReturn == true then
-			return {dollars = cost / 2}
+NotVanilla = SMODS.current_mod
+NotVanilla.Tickets = SMODS.Consumable:extend {
+    set = "Tickets",
+    use = function(self, card, area, copier)
+		if G.GAME.used_vouchers['v_nv_ticketvouch1'] then
+			SMODS.calculate_effect({dollars = math.ceil(card.cost / 2)}, card)
 		end
 	end
-}) 
+}
 
 
 
@@ -936,7 +973,7 @@ SMODS.Booster{
 
 -- vouchers area
 SMODS.Voucher{
-	key = 'ticket1',
+	key = 'ticketvouch1',
 	loc_txt = {
 		name = 'Mass Production',
 		text = {
@@ -953,30 +990,22 @@ SMODS.Voucher{
 	redeem = function(self, card)
         G.E_MANAGER:add_event(Event({
             func = function()
-                ticketRate = card.ability.extra.rate
+                G.GAME.Tickets_rate = card.ability.extra.rate
                 return true
             end
         }))
 	end,
 }
 SMODS.Voucher{
-	key = 'ticket2',
+	key = 'ticketvouch2',
 	loc_txt = {
 		name = 'Prized Tickets',
 		text = {
-			'Tickets give half of their {C:money}sell value{}',
+			'Tickets give half of their {C:money}cost{}',
 			'back when used'
 		}
 	},
 	atlas = 'Vouchers',
 	pos = {x = 1, y = 0},
-	requires = {v_nv_ticket1},
-	redeem = function(self, card)
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                dollarReturn = true
-                return true
-            end
-        }))
-	end,
+	requires = {'v_nv_ticketvouch1'}
 }
