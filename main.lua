@@ -1,3 +1,4 @@
+NotVanilla = SMODS.current_mod
 function round(n)
   if n % 1 <= 0.4 then
     return math.floor(n)
@@ -43,6 +44,18 @@ SMODS.Atlas{
 	py = 95
 }
 SMODS.Atlas{
+	key = 'ModdedTickets',
+	path = 'ModdedTickets.png',
+	px = 71,
+	py = 95
+}
+SMODS.Atlas{
+	key = 'soulAtlas',
+	path = 'soulAtlas.png',
+	px = 71,
+	py = 95
+}
+SMODS.Atlas{
 	key = 'Boosters',
 	path = 'Boosters.png',
 	px = 71,
@@ -76,7 +89,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = false,
-	pos = {x = 0, y= 0},
+	pos = {x = 0, y = 0},
 	in_pool = function(self,wawa,wawa2)
 		allow_duplicates = false
 		return true
@@ -120,7 +133,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = false,
-	pos = {x = 1, y= 0},
+	pos = {x = 1, y = 0},
 	config = { 
 		extra = {
 			dollars = 4}
@@ -153,7 +166,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = false,
-	pos = {x = 2, y= 0},
+	pos = {x = 2, y = 0},
 	in_pool = function(self,wawa,wawa2)
 		allow_duplicates = false
 		return true
@@ -194,8 +207,30 @@ SMODS.ConsumableType {
     collection_rows = { 5, 6 },
     shop_rate = 2
 }
+NotVanilla.Tickets = SMODS.Consumable:extend {
+    set = "Tickets",
+    use = function(self, card, area, copier)
+		if G.GAME.used_vouchers['v_nv_ticketvouch2'] then
+			SMODS.calculate_effect({dollars = math.ceil(card.cost / 2)}, card)
+		end
+	end
+}
+NotVanilla.Tickets = SMODS.Consumable:extend {
+	set = "Tickets",
+	loc_txt = {
+		undiscovered = {
+			name = "Not Discovered",
+            text = {
+                "Purchase or use",
+                "this card in an",
+                "unseeded run to",
+                "learn what it does",
+            },
+		},
+	},
+}
 
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'spectral1',
 	loc_txt = {
 		name = 'Spectral Ticket I',
@@ -236,7 +271,7 @@ SMODS.Consumable{
         return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'spectral2',
 	loc_txt = {
 		name = 'Spectral Ticket II',
@@ -277,7 +312,7 @@ SMODS.Consumable{
         return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'tarot1',
 	loc_txt = {
 		name = 'Tarot Ticket I',
@@ -318,7 +353,7 @@ SMODS.Consumable{
         return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'tarot2',
 	loc_txt = {
 		name = 'Tarot Ticket II',
@@ -359,7 +394,7 @@ SMODS.Consumable{
         return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'fate',
 	loc_txt = {
 		name = 'Ticket of Fate',
@@ -411,7 +446,7 @@ SMODS.Consumable{
         return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'recursion',
 	loc_txt = {
 		name = 'Recursive Ticket',
@@ -439,7 +474,7 @@ SMODS.Consumable{
                 func = function()
                     if G.consumeables.config.card_limit > #G.consumeables.cards then
                         play_sound('timpani')
-                        SMODS.add_card({ set = 'Tickets' })
+                        SMODS.add_card({ set = 'NotVanilla.Tickets' })
                         card:juice_up(0.3, 0.5)
                     end
                     return true
@@ -452,7 +487,7 @@ SMODS.Consumable{
         return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'planet1',
 	loc_txt = {
 		name = 'Planet Ticket I',
@@ -493,7 +528,7 @@ SMODS.Consumable{
         return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'planet2',
 	loc_txt = {
 		name = 'Planet Ticket II',
@@ -534,7 +569,7 @@ SMODS.Consumable{
         return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'joker1',
 	loc_txt = {
 		name = 'Buffoon Ticket I',
@@ -575,7 +610,7 @@ SMODS.Consumable{
         return G.jokers and #G.jokers.cards < G.jokers.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'joker2',
 	loc_txt = {
 		name = 'Buffoon Ticket II',
@@ -616,7 +651,7 @@ SMODS.Consumable{
         return G.jokers and #G.jokers.cards < G.jokers.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'nebula',
 	loc_txt = {
 		name = 'Nebula Ticket',
@@ -672,7 +707,7 @@ SMODS.Consumable{
         return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'tag1',
 	loc_txt = {
 		name = 'Speeding Ticket',
@@ -733,7 +768,7 @@ SMODS.Consumable{
         return true
     end
 }
-SMODS.Consumable{
+NotVanilla.Tickets{
 	key = 'voucher',
 	loc_txt = {
 		name = 'Voucher Ticket',
@@ -773,8 +808,11 @@ SMODS.Consumable{
         return true
     end
 }
+
+
+-- modded tickets area
 if next(SMODS.find_mod("Cryptid")) then
-	SMODS.Consumable{
+	NotVanilla.Tickets{
 		key = 'code1',
 		loc_txt = {
 			name = 'Code Ticket I',
@@ -783,8 +821,8 @@ if next(SMODS.find_mod("Cryptid")) then
 			},
 		},
 		atlas = 'Tickets',
-		set = 'Tickets',
-		pos = {x = 3, y = 1},
+		set = 'ModdedTickets',
+		pos = {x = 0, y = 0},
 		cost = 4,
 		config = {
 			extra = {
@@ -815,7 +853,7 @@ if next(SMODS.find_mod("Cryptid")) then
         	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     	end
 	}
-	SMODS.Consumable{
+	NotVanilla.Tickets{
 		key = 'code2',
 		loc_txt = {
 			name = 'Code Ticket II',
@@ -823,9 +861,9 @@ if next(SMODS.find_mod("Cryptid")) then
 				'Generates {C:dark_edition}#1#{} random {C:code}code{} cards'
 			},
 		},
-		atlas = 'Tickets',
+		atlas = 'ModdedTickets',
 		set = 'Tickets',
-		pos = {x = 4, y = 1},
+		pos = {x = 1, y = 0},
 		cost = 4,
 		config = {
 			extra = {
@@ -856,17 +894,610 @@ if next(SMODS.find_mod("Cryptid")) then
         	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
     	end
 	}
+	NotVanilla.Tickets{
+		key = 'code3',
+		loc_txt = {
+			name = 'Machine Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:dark_edition}glitched{} {C:code}code{} card'
+			},
+		},
+		atlas = 'Tickets',
+		set = 'ModdedTickets',
+		pos = {x = 2, y = 0},
+		cost = 6,
+		config = {
+			extra = {
+				code = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.code}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.code, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'Code', edition = 'e_cry_glitched' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
 end
-NotVanilla = SMODS.current_mod
-NotVanilla.Tickets = SMODS.Consumable:extend {
-    set = "Tickets",
-    use = function(self, card, area, copier)
-		if G.GAME.used_vouchers['v_nv_ticketvouch1'] then
-			SMODS.calculate_effect({dollars = math.ceil(card.cost / 2)}, card)
-		end
-	end
-}
-
+if next(SMODS.find_mod("RevosVault")) then
+	NotVanilla.Tickets{
+		key = 'revo1',
+		loc_txt = {
+			name = 'Contract Ticket',
+			text = {
+				'Generates a random {C:inactive}contract{}'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 3, y = 0},
+		cost = 4,
+		config = {
+			extra = {
+				consumable = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'EnchancedDocuments' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+	NotVanilla.Tickets{
+		key = 'revo2',
+		loc_txt = {
+			name = 'Scrappy Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:scrap}scrap{} card'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 4, y = 0},
+		cost = 4,
+		config = {
+			extra = {
+				consumable = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'scrap' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+	NotVanilla.Tickets{
+		key = 'revo3',
+		loc_txt = {
+			name = 'Scammy Ticket',
+			text = {
+				'Generates {C:dark_edition}1{} random {C:scrap}scrap{} card',
+				'and {C:dark_edition}1{} random {C:inactive}contract{}'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 5, y = 0},
+		cost = 4,
+		config = {
+			extra = {
+				consumable = 2
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			local switch = 0
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+            		trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+								play_sound('timpani')
+								SMODS.add_card({ set = 'EnchancedDocuments' })
+								card:juice_up(0.3, 0.5)
+								play_sound('timpani')
+								SMODS.add_card({ set = 'scrap' })
+								card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+        		}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+end
+if next(SMODS.find_mod("GrabBag")) then
+	NotVanilla.Tickets{
+		key = 'gb1',
+		loc_txt = {
+			name = 'Ticket of Visions',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:dark_edition}ephemerals{}'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 6, y = 0},
+		cost = 6,
+		config = {
+			extra = {
+				consumable = 2
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'Ephemeral' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+	NotVanilla.Tickets{
+		key = 'gb2',
+		loc_txt = {
+			name = 'Fading Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:dark_edition}temporary{} {C:mult}tickets{}'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 7, y = 0},
+		cost = 6,
+		config = {
+			extra = {
+				consumable = 2
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'Tickets', edition = 'e_gb_temporary' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+end
+if next(SMODS.find_mod("LuckyRabbit")) then
+	NotVanilla.Tickets{
+		key = 'lucky1',
+		loc_txt = {
+			name = 'Confetti Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:silly}silly{} cards'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 8, y = 0},
+		cost = 5,
+		config = {
+			extra = {
+				consumable = 2
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'Silly' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+	NotVanilla.Tickets{
+		key = 'lucky2',
+		loc_txt = {
+			name = 'Deal',
+			text = {
+				'Generates a {C:dark_edition}crisis{}',
+				'Go {C:money}$100{} in {C:mult}debt{}'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 9, y = 0},
+		cost = 1,
+		config = {
+			extra = {
+				consumable = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ key = 'c_fmod_crisis' })
+							G.GAME.dollars = -100
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit and G.GAME.round_resets.ante > 1
+    	end
+	}
+end
+if next(SMODS.find_mod("Maximus")) then
+	NotVanilla.Tickets{
+		key = 'mxms1',
+		loc_txt = {
+			name = 'Cassiopeia Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:horoscope}horoscope{}'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 0, y = 1},
+		cost = 5,
+		config = {
+			extra = {
+				consumable = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.mxms_horoscope.config.card_limit - #G.mxms_horoscope.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'Horoscope' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.mxms_horoscope and #G.mxms_horoscope.cards < G.mxms_horoscope.config.card_limit
+    	end
+	}
+	NotVanilla.Tickets{
+		key = 'mxms2',
+		loc_txt = {
+			name = 'Cetus Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:dark_edition}negative{} {C:horoscope}horoscope{}'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 1, y = 1},
+		cost = 5,
+		config = {
+			extra = {
+				consumable = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.mxms_horoscope.config.card_limit - #G.mxms_horoscope.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'Horoscope', edition = 'e_negative' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return true
+    	end
+	}
+end
+if next(SMODS.find_mod("sdm0sstuff")) then
+	NotVanilla.Tickets{
+		key = 'smd1',
+		loc_txt = {
+			name = 'Bakery Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:dark_edition}negative{} {C:bakery}bakery{} card'
+			},
+		},
+		atlas = 'soulAtlas',
+		set = 'Tickets',
+		pos = {x = 0, y = 0},
+		soul_pos = {x = 0, y = 1},
+		cost = 5,
+		config = {
+			extra = {
+				consumable = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'Bakery', edition = 'e_negative' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+	NotVanilla.Tickets{
+		key = 'smd2',
+		loc_txt = {
+			name = 'Overcooked Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:bakery}bakery{} card',
+				'with abilities doubled'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 2, y = 1},
+		cost = 4,
+		config = {
+			extra = {
+				consumable = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+							local _funnykey = SMODS.add_card({ set = 'Bakery' })
+                        	play_sound('timpani')
+							_funnykey.ability.extra.amount = 2 * _funnykey.ability.extra.amount
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+end
+if next(SMODS.find_mod("JoJoMod")) then
+	NotVanilla.Tickets{
+		key = 'jojo1',
+		loc_txt = {
+			name = 'Stand Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:dark_edition}stand{}'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 3, y = 1},
+		cost = 6,
+		config = {
+			extra = {
+				jokers = 1
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.jokers}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.jokers, G.jokers.config.card_limit - #G.jokers.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.jokers.config.card_limit > #G.jokers.cards then
+                        	play_sound('timpani')
+							local stands = {}
+							for k, v in pairs(G.P_CENTERS) do
+   								if v.set == "Joker" and v.mod and v.mod.id == "JoJoMod" and string.find(k,'stand_') ~= nil then
+        							table.insert(stands, v.key)
+    							end
+							end
+							local joker = pseudorandom_element(stands, "seedblahblahblah")
+							SMODS.add_card({key = joker, set = "Joker"})
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.jokers and #G.jokers.cards < G.jokers.config.card_limit
+    	end
+	}
+	NotVanilla.Tickets{
+		key = 'jojo2',
+		loc_txt = {
+			name = 'Junk Ticket',
+			text = {
+				'Generates {C:dark_edition}#1#{} random {C:attention}scraps{}'
+			},
+		},
+		atlas = 'ModdedTickets',
+		set = 'Tickets',
+		pos = {x = 4, y = 1},
+		cost = 5,
+		config = {
+			extra = {
+				consumable = 2
+			}
+		},
+		loc_vars = function(self,info_queue,center)
+			return{vars = {center.ability.extra.consumable}}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, math.min(card.ability.extra.consumable, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+                	trigger = 'after',
+                	delay = 0.4,
+                	func = function()
+                    	if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        	play_sound('timpani')
+                        	SMODS.add_card({ set = 'jojo_Scraps' })
+                        	card:juice_up(0.3, 0.5)
+                    	end
+                    	return true
+                	end
+            	}))
+        	end
+        	delay(0.6)
+		end,
+    	can_use = function(self, card)
+        	return G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit
+    	end
+	}
+end
 
 
 -- boosters area
