@@ -474,7 +474,7 @@ NotVanilla.Tickets{
                 func = function()
                     if G.consumeables.config.card_limit > #G.consumeables.cards then
                         play_sound('timpani')
-                        SMODS.add_card({ set = 'NotVanilla.Tickets' })
+                        SMODS.add_card({ set = 'Tickets' })
                         card:juice_up(0.3, 0.5)
                     end
                     return true
@@ -1322,7 +1322,7 @@ if next(SMODS.find_mod("Maximus")) then
 end
 if next(SMODS.find_mod("sdm0sstuff")) then
 	NotVanilla.Tickets{
-		key = 'smd1',
+		key = 'sdm1',
 		loc_txt = {
 			name = 'Bakery Ticket',
 			text = {
@@ -1364,7 +1364,7 @@ if next(SMODS.find_mod("sdm0sstuff")) then
     	end
 	}
 	NotVanilla.Tickets{
-		key = 'smd2',
+		key = 'sdm2',
 		loc_txt = {
 			name = 'Overcooked Ticket',
 			text = {
